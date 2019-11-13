@@ -1,26 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './App.css';
+import  GenerateQuote  from  './GenerateQuote';
+import  DisplayQuote  from  './DisplayQuote';
+
+
+
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      // we can set up our sampleEmployee as the default
+      // to always display an employee
+      quote: []
+       
+    };
+    this.getQuote = this.getQuote.bind(this);
+  };
+
+  getQuote() {
+    // Employee collection via fetch
+    fetch("https://thesimpsonsquoteapi.glitch.me/quotes")
+      .then(response  =>  response.json())
+      .then(data  => {
+        // Once the data is collected, we update our state with the new data
+        console.log(data)
+        this.setState({
+          quote: data[0]
+        });
+    });
 }
 
-export default App;
+render()
+{
+  
+
+
+  return (
+    <div className="App">
+<GenerateQuote  selectQuote={() => this.getQuote()}  />
+<DisplayQuote  quote={this.state.quote}  />
+    </div>
+  );
+  }
+}
+
+export  default  App;
